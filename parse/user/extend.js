@@ -20,6 +20,29 @@ Parse.User.prototype.refresh = function() {
     return promise;
 }
 
+/**
+ * afterLogin
+ * Called after User successfully logs in
+ */
+Parse.User.prototype.afterLogin = function() {
+    this.setUserACL();
+}
+
+/**
+ * setUserACL
+ * Set an ACL on user's data to not be publicly readable
+ * https://parse.com/docs/data#security-objects
+ */
+Parse.User.prototype.setUserACL = function() {
+    this.setACL(new Parse.ACL(this));
+    this.save();
+}
+
+/**
+ * getName
+ *
+ * @return {string} User name
+ */
 Parse.User.prototype.getName = function() {
     var name = '';
     var firstName = this.get('firstName');
@@ -36,6 +59,10 @@ Parse.User.prototype.getName = function() {
     return name;
 }
 
+/**
+ * getFbImageUrl
+ * @return {string} url of Facebook image
+ */
 Parse.User.prototype.getFbImageUrl = function(width, height) {
     width = typeof width === 'undefined'? 60 : width;
     height = width;
@@ -43,6 +70,10 @@ Parse.User.prototype.getFbImageUrl = function(width, height) {
     return imgUrl;
 }
 
+/**
+ * getFbImage
+ * @return {string} img tag of Facebook image
+ */
 Parse.User.prototype.getFbImage = function(width, height) {
     var name = this.getName();
     var imgUrl = this.getFbImageUrl(width, height);
@@ -70,6 +101,7 @@ Parse.User.prototype.getLatLngString = function(readable) {
 
 /**
  * updateWithGraphUser
+ * Updates User with Facebook graph user data
  * This function can only be called on the currently logged-in user
  */
 Parse.User.prototype.updateWithGraphUser = function(callback) {
@@ -99,8 +131,12 @@ Parse.User.prototype.updateWithGraphUser = function(callback) {
     return promise;
 }
 
+/**
+ * updateCloseFacebookFriends
+ * @return {promise} array of friend ids
+ */
 Parse.User.prototype.updateCloseFacebookFriends = function() {
-    _Y.log('Parse.User.prototype.getCloseFacebookFriends');
+    _Y.log('Parse.User.prototype.updateCloseFacebookFriends');
     var parseUser = this;
     var promise = new Parse.Promise();
     FB.api('/me/friends?limit=2000', function(response) {
@@ -117,6 +153,11 @@ Parse.User.prototype.updateCloseFacebookFriends = function() {
     return promise;
 }
 
+/**
+ * markLocationOnMap
+ * @param {obj} googleMap
+ * @return {obj} marker
+ */
 Parse.User.prototype.markLocationOnMap = function(googleMap) {
     _Y.log('markLocationOnMap');
     var marker = null;
@@ -147,6 +188,11 @@ Parse.User.prototype.markLocationOnMap = function(googleMap) {
     return marker;
 }
 
+/**
+ * updateLocation
+ * updates the stored location
+ * @param {obj} location
+ */
 Parse.User.prototype.updateLocation = function(location) {
     _Y.log('updateLocation');
     var parseUser = this;
@@ -163,6 +209,11 @@ Parse.User.prototype.updateLocation = function(location) {
     return promise;
 }
 
+/**
+ * getFriends
+ * Retrieve previously stored Facebook friends
+ * @return {promise} array of Users who are Facebook friends
+ */
 Parse.User.prototype.getFriends = function() {
     _Y.log('Parse.User.prototype.getFriends');
     var promise = new Parse.Promise();
