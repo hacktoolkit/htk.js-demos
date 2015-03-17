@@ -132,7 +132,8 @@ Parse.User.prototype.markLocationOnMap = function(googleMap) {
             // The origin for this image is 0,0.
             origin: new google.maps.Point(0,0),
             // The anchor for this image is the bottom-left at 0,`iconSize`.
-            anchor: new google.maps.Point(0, iconSize)
+            anchor: new google.maps.Point(0, iconSize),
+            scaledSize: new google.maps.Size(iconSize, iconSize)
         };
         marker = new google.maps.Marker({
             map: googleMap,
