@@ -1,19 +1,11 @@
 /**
  * refresh
- * ensures that the local copy of the object is the freshest
- * https://parse.com/docs/js_guide#objects-retrieving
+ * @return {Parse.Promise<Parse.User>} refreshed user if user has an empty name
  */
 Parse.User.prototype.refresh = function() {
     var promise = new Parse.Promise();
     if (this.getName() === '') {
-        this.fetch({
-            success: function(updatedUser) {
-                promise.resolve(updatedUser);
-            },
-            error: function(oldUser, error) {
-                promise.reject(error);
-            }
-        });
+        promise = Parse.Object.prototype.refresh.call(this);
     } else {
         promise.resolve(this);
     }
@@ -25,17 +17,28 @@ Parse.User.prototype.refresh = function() {
  * Called after User successfully logs in
  */
 Parse.User.prototype.afterLogin = function() {
-    this.setUserACL();
+    //this.setUserACL(this);
 }
 
 /**
- * setUserACL
- * Set an ACL on user's data to not be publicly readable
- * https://parse.com/docs/data#security-objects
+ * getCachedRelation
  */
-Parse.User.prototype.setUserACL = function() {
-    this.setACL(new Parse.ACL(this));
-    this.save();
+Parse.User.prototype.getCachedRelation = function(key) {
+    var obj;
+    if (this._cachedRelations) {
+        obj = this._cachedRelations[key];
+    }
+    return obj;
+}
+
+/**
+ * cacheRelation
+ */
+Parse.User.prototype.cacheRelation = function(key, value) {
+    if (!this._cachedRelations) {
+        this._cachedRelations = {};
+    }
+    this._cachedRelations[key] = value;
 }
 
 /**
@@ -86,19 +89,6 @@ Parse.User.prototype.getAddress = function() {
     return address;
 }
 
-Parse.User.prototype.getLatLngString = function(readable) {
-    var geoPoint = this.get('location');
-    var latlng;
-    if (geoPoint) {
-        if (readable) {
-            latlng = geoPoint.latitude.toFixed(5) + ', ' + geoPoint.longitude.toFixed(5);
-        } else {
-            latlng = geoPoint.latitude + ',' + geoPoint.longitude;
-        }
-    }
-    return latlng;
-}
-
 /**
  * updateWithGraphUser
  * Updates User with Facebook graph user data
@@ -115,12 +105,15 @@ Parse.User.prototype.updateWithGraphUser = function(callback) {
         var lastName = fbUser.last_name;
         var email = fbUser.email;
         var fbUrl = fbUser.link;
-        parseUser.set('fbId', fbId);
-        parseUser.set('firstName', firstName);
-        parseUser.set('lastName', lastName);
-        parseUser.set('email', email);
-        parseUser.set('fbUser', fbUser);
-        parseUser.save().then(function(updatedUser) {
+        var data = {
+            fbId: fbId,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            fbUrl: fbUrl,
+            fbUser: fbUser
+        };
+        parseUser.save(data).then(function(updatedUser) {
             _Y.log(updatedUser.get('firstName'));
             if (typeof callback === 'function') {
                 callback(updatedUser);
@@ -141,11 +134,7 @@ Parse.User.prototype.updateCloseFacebookFriends = function() {
     var promise = new Parse.Promise();
     FB.api('/me/friends?limit=2000', function(response) {
         var friends = response.data;
-        var friendIds = [];
-        for (var i=0; i < friends.length; ++i) {
-            var friend = friends[i];
-            friendIds.push(friend.id);
-        }
+        var friendIds = _.map(friends, 'id');
         promise.resolve(friendIds);
         parseUser.set('fbFriends', friendIds);
         parseUser.save();
@@ -158,10 +147,10 @@ Parse.User.prototype.updateCloseFacebookFriends = function() {
  * @param {obj} googleMap
  * @return {obj} marker
  */
-Parse.User.prototype.markLocationOnMap = function(googleMap) {
-    _Y.log('markLocationOnMap');
+Parse.User.prototype.markLocationOnMap = function(googleMap, preciseLocation) {
+    _Y.log('User.markLocationOnMap');
     var marker = null;
-    var geoPoint = this.get('location');
+    var geoPoint = preciseLocation.get('location');
     if (geoPoint) {
         var location = new google.maps.LatLng(geoPoint.latitude, geoPoint.longitude);
 
@@ -189,24 +178,64 @@ Parse.User.prototype.markLocationOnMap = function(googleMap) {
 }
 
 /**
+ * getCoarseLocation
+ */
+Parse.User.prototype.getCoarseLocation = function() {
+    _Y.log('User.getCoarseLocation');
+    var promise = new Parse.Promise();
+    var coarseLocation = this.get('coarseLocation');
+    if (coarseLocation) {
+        coarseLocation.refresh().then(function(coarseLocation) {
+            promise.resolve(coarseLocation);
+        });
+    } else {
+        coarseLocation = new UserCoarseLocation();
+        coarseLocation.set('user', this);
+//        coarseLocation.save();
+        var data = {
+            coarseLocation: coarseLocation
+        };
+        this.save(data).then(function(updatedUser) {
+            promise.resolve(coarseLocation);
+        });
+    }
+    return promise;
+}
+
+/**
+ * getPreciseLocation
+ */
+Parse.User.prototype.getPreciseLocation = function() {
+    _Y.log('User.getPreciseLocation');
+    var preciseLocation = this.get('preciseLocation');
+    if (!preciseLocation) {
+        preciseLocation = new UserPreciseLocation();
+        preciseLocation.set('user', this);
+//        preciseLocation.save();
+        var data = {
+            preciseLocation: preciseLocation
+        };
+        this.save(data);
+    }
+    return preciseLocation;
+}
+
+/**
  * updateLocation
  * updates the stored location
  * @param {obj} location
  */
 Parse.User.prototype.updateLocation = function(location) {
-    _Y.log('updateLocation');
-    var parseUser = this;
-    var point = new Parse.GeoPoint({
-        latitude: location.latitude,
-        longitude: location.longitude
-    });
-    parseUser.set('location', point);
-    parseUser.set('locationLastUpdatedAt', new Date());
-    if (location.address) {
-        parseUser.set('address', location.address);
+    _Y.log('User.updateLocation');
+    if (location) {
+        var geocoderResult = location.geocoderResult;
+        location.address = geocoderResult.formatted_address;
+        var addressComponents = geocoderResult.address_components;
+        var extractedAddressComponents = extractAddressComponents(addressComponents);
+        location = _.merge(location, extractedAddressComponents);
+        UserCoarseLocation.updateForUser(this, location);
+        UserPreciseLocation.updateForUser(this, location);
     }
-    var promise = parseUser.save();
-    return promise;
 }
 
 /**

@@ -1,0 +1,33 @@
+{
+  "name": "htk.js",
+  "version": "0.1.0",
+  "description": "JavaScript Hacktoolkit",
+  "main": "Gruntfile.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hacktoolkit/htk.js"
+  },
+  "keywords": [
+    "JavaScript",
+    "JS",
+    "HTK",
+    "Hacktoolkit"
+  ],
+  "author": "Hacktoolkit <hello@hacktoolkit.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hacktoolkit/htk.js/issues"
+  },
+  "homepage": "https://github.com/hacktoolkit/htk.js",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.11.0",
+    "grunt-contrib-uglify": "^0.8.0"
+  }
+}
