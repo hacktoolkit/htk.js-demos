@@ -244,6 +244,7 @@ Parse.User.prototype.updateLocation = function(location) {
  * @return {promise} array of Users who are Facebook friends
  */
 Parse.User.prototype.getFriends = function() {
+    var parseUser = this;
     _Y.log('Parse.User.prototype.getFriends');
     var promise = new Parse.Promise();
     var fbFriends = this.get('fbFriends');
@@ -252,10 +253,53 @@ Parse.User.prototype.getFriends = function() {
         query.containedIn('fbId', fbFriends);
         query.find({
             success: function(fbParseFriends) {
+                parseUser.updateFriends(fbParseFriends);
                 _Y.log('Successfully retrieved Facebook friends');
                 promise.resolve(fbParseFriends);
+            },
+            error: function(error) {
+                _Y.log('Could not retrieve Facebook friends');
+                promise.reject('Could not retrieve Facebook friends');
             }
         });
     }
     return promise;
+}
+
+Parse.User.prototype.getFriendRoleName = function() {
+    var roleName = 'friendOf-' + this.id;
+    return roleName;
+}
+
+Parse.User.prototype.getOrCreateFriendsRole = function() {
+    var parseUser = this;
+    console.log(parseUser.getName());
+    var promise = new Parse.Promise();
+    var roleName = this.getFriendRoleName();
+    var query = new Parse.Query(Parse.Role);
+    query.equalTo('name', roleName);
+    query.first({
+        success: function(role) {
+            console.log('found');
+            promise.resolve(role);
+        },
+        error: function(error) {
+            console.log('not found');
+            var roleACL = new Parse.ACL();
+            roleACL.setPublicReadAccess(true);
+            roleACL.setWriteAccess(parseUser.id, true);
+            var role = new Parse.Role(roleName, roleACL);
+            role.save();
+            promise.resolve(role);
+        }
+    });
+    return promise;
+}
+
+Parse.User.prototype.updateFriends = function(friends) {
+    var promise = this.getOrCreateFriendsRole();
+    promise.then(function (friendsRole) {
+        friendsRole.getUsers().add(friends);
+        friendsRole.save();
+    })
 }

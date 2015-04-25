@@ -59,3 +59,17 @@ Parse.Object.prototype.setUserACL = function(user, opts) {
         }
     }
 }
+
+// Fetches the config at most once every 12 hours per app runtime
+var refreshParseConfig = function() {
+  var lastFetchedDate;
+  const configRefreshInterval = 12 * 60 * 60 * 1000;
+  return function() {
+    var currentDate = new Date();
+    if (lastFetchedDate === undefined ||
+        currentDate.getTime() - lastFetchedDate.getTime() > configRefreshInterval) {
+      Parse.Config.get();
+      lastFetchedDate = currentDate;
+    }
+  };
+}();
