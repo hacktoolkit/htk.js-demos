@@ -7,13 +7,12 @@
 
 ## Demos of Web Technologies
 
-Demos inspired by [Ariya Hidayat](http://twitter.com/ariyahidayat)'s [Web Technologies Test Cases](http://ariya.github.io/)
+Demos adapted from and inspired by [Ariya Hidayat](http://twitter.com/ariyahidayat)'s [Web Technologies Test Cases](http://ariya.github.io/)
 
 ### Browser
 - [User Agent](demos/browser/useragent/)
 - [Detected features](demos/browser/features/)
-
-
+- [Timer speed](demos/browser/timerspeed/)
 
 ### HTML5
 
