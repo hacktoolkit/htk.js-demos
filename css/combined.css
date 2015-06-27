@@ -1,0 +1,21 @@
+#header {
+  height: 30px;
+  padding: 5px;
+}
+#header .brand {
+  font-size: 30px;
+  font-weight: bold;
+}
+#header .header-right {
+  text-align: right;
+}
+#wrap {
+  min-height: 100%;
+}
+#main {
+  text-align: center;
+  padding: 20px;
+}
+#footer {
+  text-align: center;
+}
