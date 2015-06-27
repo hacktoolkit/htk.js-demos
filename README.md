@@ -2,7 +2,8 @@
 
 [![Build Status](https://travis-ci.org/hacktoolkit/htk.js.svg?branch=master)](https://travis-ci.org/hacktoolkit/htk.js)
 
-[Hacktoolkit for JavaScript](https://github.com/hacktoolkit/htk.js)
+- GitHub: [Hacktoolkit for JavaScript](https://github.com/hacktoolkit/htk.js)
+- Website: <http://www.hacktoolkit.com/htk.js/>
 
 ## Demos of Web Technologies
 
