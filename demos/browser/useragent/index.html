@@ -1,0 +1,27 @@
+---
+layout: htk_js_base
+title: User Agent
+---
+
+<div class="useragent-content">
+  One moment...
+</div>
+
+<script>
+window.setTimeout(function() {
+    var str = '';
+    str += '<p><b>navigator.platform</b>: ' + navigator.platform +
+    '<br>';
+    str += '<b>navigator.userAgent</b>: ' + navigator.userAgent +
+    '</p>';
+    str += '<p><b>screen.width</b>: ' + screen.width + '<br>';
+    str += '<b>screen.height</b>: ' + screen.height + '</p>';
+    str += '<p><b>window.innerWidth</b>: ' + window.innerWidth +
+    '<br>';
+    str += '<b>window.innerHeight</b>: ' + window.innerHeight +
+    '</p>';
+    str += '<p><b>window.devicePixelRatio</b>: ' +
+    window.devicePixelRatio + '</p>';
+    $('.useragent-content').html(str);
+}, 500);
+</script>
