@@ -1,0 +1,53 @@
+---
+layout: htk_js_base
+title: Geocoding & Reverse Geocoding
+---
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+<p id="progress">Please wait...</p>
+<p>Latitude: <span id="latitude">unknown</span><br>
+Longitude: <span id="longitude">unknown</span><br>
+Accuracy: <span id="accuracy">unknown</span></p>
+<p>Approximate address: <span id="geocode">unavailable</span></p>
+<p id="map" style="height: 280px;"></p>
+<script>
+var el = document.getElementById('progress'),
+    latitude = document.getElementById('latitude'),
+    longitude = document.getElementById('longitude'),
+    geocode = document.getElementById('geocode');
+
+
+if (navigator.geolocation) {
+    el.textContent = 'Location is obtained.';
+    window.onload = function() {
+        var geocoder = new google.maps.Geocoder();
+        navigator.geolocation.watchPosition(function (position) {
+            var coords = position.coords,
+                pos = new google.maps.LatLng(coords.latitude, coords.longitude);
+
+            latitude.textContent = coords.latitude.toFixed(2);
+            longitude.textContent = coords.longitude.toFixed(2);
+            accuracy.textContent = (coords.accuracy/1000).toFixed(1) +
+            ' km';
+
+            geocoder.geocode({'latLng': pos}, function (results,
+            status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    if (results.length && results[0].formatted_address) {
+                        geocode.textContent = results[0].formatted_address;
+                    }
+                } else {
+                    geocode.textContent = 'unavailable (' + status + ')';
+                }
+            });
+        }, function (error) {
+            el.textContent = 'Error: ' + error.toMessage();
+        }, {
+            enableHighAccuracy: true,
+            timeout: 30 * 1000,        // 30 secs
+            maximumAge: 5 * 60 * 1000, // 5 mins
+        });
+    };
+} else {
+    el.textContent = 'Sorry! Your browser does not support geolocation.';
+}
+</script>

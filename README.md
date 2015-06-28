@@ -10,16 +10,20 @@
 Demos adapted from and inspired by [Ariya Hidayat](http://twitter.com/ariyahidayat)'s [Web Technologies Test Cases](http://ariya.github.io/)
 
 ### Browser
+
 - [User Agent](demos/browser/useragent/)
 - [Detected features](demos/browser/features/)
 - [Timer speed](demos/browser/timerspeed/)
 
 ### HTML5
 
+- [Geolocation](demos/html/geolocation/)
+- [Geocoding](demos/html/geocoding/)
+- [Touch Event Detection](demos/js/touchdetect/)
+
+
 ### CSS3
 
 ### JavaScript
 
 ### SVG
-
-### Demo Apps

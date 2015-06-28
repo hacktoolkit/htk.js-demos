@@ -1,0 +1,28 @@
+---
+layout: htk_js_base
+title: Touch Event Detection
+---
+<script>
+supportTouch = function () {
+    var s = false;
+    try {
+        document.createEvent('TouchEvent');
+        s = ('ontouchstart' in document.body) &&
+            ('ontouchend' in document.body) &&
+            ('ontouchmove' in document.body);
+    } catch (e) {
+    }
+    return s;
+};
+</script>
+
+<p>Support touch events: <b><span id="i">No</span></b>.</p>
+<p class="footer" id="ua"></p>
+
+<script>
+window.onload = function () {
+    document.getElementById('i').textContent = supportTouch();
+    document.getElementById('ua').textContent = 'User agent: ' +
+    navigator.userAgent;
+};
+</script>

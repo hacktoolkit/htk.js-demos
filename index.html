@@ -3,7 +3,5 @@ layout: htk_js_base
 title: Home
 ---
 
-<h3>{{ page.title }}</h3>
-
 {% capture README %}{% include_relative README.md %}{% endcapture %}
 {{ README | markdownify }}

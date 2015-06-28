@@ -1,0 +1,59 @@
+---
+layout: htk_js_base
+title: Geolocation
+---
+<link rel="stylesheet" type="text/css" href="http://cdn.leafletjs.com/leaflet-0.6/leaflet.css"/>
+<script src="http://cdn.leafletjs.com/leaflet-0.6/leaflet.js"></script>
+
+<b>Progress</b> <span id="progress">Please wait...</span>
+<p>
+  <b>Latitude:</b> <span id="latitude">unknown</span><br>
+  <b>Longitude:</b> <span id="longitude">unknown</span><br>
+  <b>Accuracy:</b> <span id="accuracy">unknown</span>
+</p>
+<p>
+<button class="pure-button" id="geocode" disabled onclick="location='../geocoding/'"/>
+  Find approximate address
+</button>
+
+<p id="map" style="height: 280px;"></p>
+<script>
+var el = document.getElementById('progress'),
+    latitude = document.getElementById('latitude'),
+    longitude = document.getElementById('longitude');
+
+if (navigator.geolocation) {
+    document.getElementById('geocode').disabled = false;
+    window.onload = function() {
+        navigator.geolocation.watchPosition(function (position) {
+            var coords = position.coords,
+            map = L.map('map').setView([coords.latitude, coords.longitude], 11);
+
+            el.textContent = 'Location is obtained.';
+            document.getElementById('geocode').disabled = false;
+
+            latitude.textContent = coords.latitude.toFixed(2);
+            longitude.textContent = coords.longitude.toFixed(2);
+            accuracy.textContent = (coords.accuracy/1000).toFixed(1) +
+            ' km';
+
+            map.zoomControl.setPosition('bottomright');
+            L.tileLayer('http://{s}.tile.cloudmade.com/031678dbee074a098a6da2d1bad30438/997/256/{z}/{x}/{y}.png',
+            {
+                attribution: 'Map data &copy; <a href="http://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a><br>Imagery &copy <a href="http://cloudmade.com/">CloudMade</a>.',
+                maxZoom: 18
+            }).addTo(map);
+            L.marker([coords.latitude,
+            coords.longitude]).addTo(map).bindPopup('You are here');
+        }, function (error) {
+            el.textContent = 'Error: ' + error.toMessage();
+        }, {
+            enableHighAccuracy: true,
+            timeout: 30 * 1000,        // 30 secs
+            maximumAge: 5 * 60 * 1000, // 5 mins
+        });
+    };
+} else {
+    el.textContent = 'Sorry! Your browser does not support geolocation.';
+}
+</script>
