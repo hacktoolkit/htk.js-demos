@@ -1,0 +1,37 @@
+---
+layout: htk_js_base
+title: 'Orientation: Landscape vs Portrait'
+---
+<script>
+window.addEventListener("load", function () {
+    window.setTimeout(function () {
+        var updateOrientation = function () {
+            var s = 'Unknown',
+                angle = +window.orientation;
+            if (angle === 0 || angle === 180) {
+                s = 'Portrait (angle = ' + angle + ')';
+            }
+            if (angle === 90 || angle === -90) {
+                s = 'Landscape (angle = ' + angle + ')';
+            }
+            document.getElementById('status').innerHTML = s;
+        };
+
+        if (typeof window.orientation !== 'undefined' &&
+        'onorientationchange' in window) {
+            document.getElementById('support').innerHTML = 'Yes';
+            window.addEventListener('orientationchange',
+        updateOrientation, false);
+            updateOrientation();
+        } else {
+            document.getElementById('support').innerHTML = 'No';
+        }
+    }, 0);
+}, false);
+</script>
+
+<p>Support for orientation change: <b><span id="support">Undetected</span>.</b></p>
+<p>Current orientation: <b><span id="status">Unknown</span>.</b></p>
+<p class="footer">User agent:
+<script>document.write(navigator.userAgent);</script>
+</p>

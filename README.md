@@ -20,7 +20,8 @@ Demos adapted from and inspired by [Ariya Hidayat](http://twitter.com/ariyahiday
 - [Geolocation](demos/html/geolocation/)
 - [Geocoding](demos/html/geocoding/)
 - [Touch Event Detection](demos/js/touchdetect/)
-
+- [Accelerometer Viewer](demos/js/accelerometer/)
+- [Orientation: Landscape vs Portrait](demos/js/orientation/)
 
 ### CSS3
 
