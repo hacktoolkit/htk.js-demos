@@ -1,0 +1,99 @@
+---
+layout: htk_js_base
+title: Spinning Cube
+---
+<style type="text/css">
+#container {
+    width: 400px;
+    height: 250px;
+    perspective: 400px;
+    -webkit-perspective: 400px;
+}
+
+@keyframes rotating {
+0%    { transform: rotateY(0deg); }
+50%   { transform: rotateY(180deg); }
+100%  { transform: rotateY(360deg); }
+}
+
+@-webkit-keyframes rotating {
+0%    { -webkit-transform: rotateY(0deg); }
+50%   { -webkit-transform: rotateY(180deg); }
+100%  { -webkit-transform: rotateY(360deg); }
+}
+
+.cube {
+    height: 200px;
+    transform-style: preserve-3d;
+    animation-name: rotating;
+    animation-duration: 5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    -webkit-transform-style: preserve-3d;
+    -webkit-animation-name: rotating;
+    -webkit-animation-duration: 5s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+}
+
+.side {
+    position: absolute;
+    left: 100px;
+    top: 0px;
+    width: 200px;
+    height: 200px;
+    background-color: rgba(192, 192, 192, 0.8);
+    border: 2px solid #888;
+    font-size: 24px;
+    color: #222;
+    text-align: center;
+    text-shadow: 0px 2px 1px white;
+}
+
+.side p {
+    margin-top: 60px;
+}
+
+.one {
+    transform: rotateY(0deg) translateZ(100px);
+    -webkit-transform: rotateY(0deg) translateZ(100px);
+}
+
+.two {
+    transform: rotateY(90deg) translateZ(100px);
+    -webkit-transform: rotateY(90deg) translateZ(100px);
+}
+
+.three {
+    transform: rotateY(180deg) translateZ(100px);
+    -webkit-transform: rotateY(180deg) translateZ(100px);
+}
+
+.four {
+    transform: rotateY(270deg) translateZ(100px);
+    -webkit-transform: rotateY(270deg) translateZ(100px);
+}
+
+</style>
+<script>
+function adjustSpeed(factor)
+{
+    var el = document.getElementById('c'),
+        duration = parseFloat(el.style.webkitAnimationDuration);
+    el.style.webkitAnimationDuration = (duration / factor) + 's';
+}
+</script>
+
+<div id="container" style="">
+    <div id="c" class="cube" style="-webkit-animation-duration: 5s">
+        <div class="side one"><p>Spinning cube</p></div>
+        <div class="side two"><p>No JavaScript!</p></div>
+        <div class="side three"><p>and keyframe animation</p></div>
+        <div class="side four"><p>with CSS transform</p></div>
+    </div>
+</div>
+
+<div id="control">
+    <button class="pure-button" onclick="adjustSpeed(1.25)">Faster</button>
+    <button class="pure-button" onclick="adjustSpeed(0.8)">Slower</button>
+</div>

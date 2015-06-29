@@ -24,6 +24,7 @@ Demos adapted from and inspired by [Ariya Hidayat](http://twitter.com/ariyahiday
 - [Orientation: Landscape vs Portrait](demos/js/orientation/)
 
 ### CSS3
+- [Spinning Cube](demos/css/spinningcube/)
 
 ### JavaScript
 
