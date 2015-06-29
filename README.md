@@ -25,6 +25,9 @@ Demos adapted from and inspired by [Ariya Hidayat](http://twitter.com/ariyahiday
 
 ### CSS3
 - [Spinning Cube](demos/css/spinningcube/)
+- [3D Scrolling](demos/css/scrolling/)
+- [Box and Text Shadow](demos/css/shadow/)
+- [Glowing Text](demos/css/glowingtext/)
 
 ### JavaScript
 

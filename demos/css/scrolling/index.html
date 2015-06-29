@@ -1,0 +1,50 @@
+---
+layout: htk_js_base
+title: 3D Scrolling
+---
+<style>
+body {
+    background-color: black;
+    color: white;
+}
+
+@-webkit-keyframes scroll
+{
+    0% {  -webkit-transform: translate(0, 350px); opacity: 1 }
+    100% { -webkit-transform: translate(0, -500px); opacity: 0 }
+}
+
+.scrolling {
+    color: #fcdf2b;
+    margin: 1em;
+    font-size: 1em;
+    text-shadow: none;
+    text-align: center;
+    -webkit-animation-name: scroll;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-duration: 45s;
+    -webkit-animation-timing-function: ease-out;
+}
+.container {
+    -webkit-transform: perspective(400) rotateX(30deg)
+}
+</style>
+<div class="container">
+    <p class="scrolling">
+      A long time ago, in a galaxy far, far away...<br/>
+      There was a software engineer who wanted to explore the powers of
+      the dark side of the force.<br/>
+      <br/>
+      So he embarked on a journey across the web and encountered many
+      strange creatures who spoke languages of HTML, JavaScript, and
+      CSS.<br/>
+      <br/>
+      In one of those journeys, one unfortunate enough to come across
+      him beheld this mighty warrior wielding a formidable weapon, the
+      one which was spoken of in ancient lore to be able to level
+      entire civilizations with one strike.<br/>
+      <br/>
+      Cryptography, and the determining of very large prime factors,
+      was behind this powerful force...<br/>
+    </p>
+</div>

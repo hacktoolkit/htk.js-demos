@@ -1,0 +1,44 @@
+---
+layout: htk_js_base
+title: Glowing Text
+---
+<style>
+@keyframes glow
+{
+    0% { text-shadow: 0 0 2px white, 0 0 2px white; }
+    50% { text-shadow: 0 0 20px white, 0 0 50px white; }
+    100% { text-shadow: 0 0 2px white, 0 0 2px white; }
+}
+
+@-webkit-keyframes glow
+{
+    0% { text-shadow: 0 0 2px white, 0 0 2px white; }
+    50% { text-shadow: 0 0 20px white, 0 0 50px white; }
+    100% { text-shadow: 0 0 2px white, 0 0 2px white; }
+}
+
+body {
+   background-color: #333;
+}
+
+.glowing {
+    color: #eee;
+    font-size: 2em;
+    font-weight: bold;
+    margin: 1.2em;
+    text-align: center;
+    text-shadow: 0 0 5px white, 0 0 10px white;
+    animation-name: glow;
+    animation-iteration-count: infinite;
+    animation-duration: 5s;
+    animation-timing-function: linear;
+    -webkit-animation-name: glow;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-duration: 5s;
+    -webkit-animation-timing-function: linear;
+}
+</style>
+
+<p class="glowing">
+  Warp core reactor meltdown imminent. Proceed to escape pods.
+</p>

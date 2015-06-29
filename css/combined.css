@@ -19,3 +19,10 @@
 #footer {
   text-align: center;
 }
+a {
+  color: blue;
+}
+a:active,
+a:visited {
+  color: blue;
+}
