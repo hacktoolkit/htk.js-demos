@@ -30,5 +30,6 @@ Demos adapted from and inspired by [Ariya Hidayat](http://twitter.com/ariyahiday
 - [Glowing Text](demos/css/glowingtext/)
 
 ### JavaScript
+- [Chess](demos/js/chess/)
 
 ### SVG

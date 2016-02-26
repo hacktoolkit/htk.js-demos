@@ -2,10 +2,10 @@
 {% include htk/fragments/js/rollbar.html %}
 {% endif %}
 <script src="//yui.yahooapis.com/{{ site.libs.js.yui }}/build/yui/yui-min.js"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/{{ site.libs.js.jquery }}/jquery.min.js"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/{{ site.libs.js.jqueryui }}/jquery-ui.min.js"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/{{ site.libs.js.lodash }}/lodash.min.js"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/{{ site.libs.js.backbone }}/backbone-min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/{% if page.libs.js.jquery %}{{ page.libs.js.jquery }}{% else %}{{ site.libs.js.jquery }}{% endif %}/jquery.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/{% if page.libs.js.jqueryui %}{{ page.libs.js.jqueryui }}{% else %}{{ site.libs.js.jqueryui }}{% endif %}/jquery-ui.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/{% if page.libs.js.lodash %}{{ page.libs.js.lodash }}{% else %}{{ site.libs.js.lodash }}{% endif %}/lodash.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/{% if page.libs.js.backbone %}{{ page.libs.js.backbone }}{% else %}{{ site.libs.js.backbone }}{% endif %}/backbone-min.js"></script>
 {% include htk/fragments/js/constants.html %}
 {% if site.api.parse.app_id and site.api.parse.js_key %}
 <script type="text/javascript" src="http://www.parsecdn.com/js/parse-{{ site.libs.js.parse }}.min.js"></script>

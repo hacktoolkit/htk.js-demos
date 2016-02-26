@@ -1,0 +1,44 @@
+/*****************************
+  chess board
+*****************************/
+.chess #board {
+  position: relative;
+  border-style: none;
+  width: 400px;
+}
+
+.chess .board-bg {
+  background: #000;
+  width: 405px;
+  height: 405px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  border-collapse: inherit;
+  margin: 0 auto;
+}
+
+.chess .board-bg td {
+  width: 46px;
+  height: 46px;
+  border-style: none;
+  background: #bdc3c7;/* light color *//*#30d0c6;*/
+}
+
+.chess .element.KingWhite .rotatable, .chess .element.KingBlack .rotatable {
+  -moz-transform: translate(-2px, -1px);
+  -ms-transform: translate(-2px, -1px);
+}
+
+.chess .board-bg tr:nth-child(odd) td:nth-child(even),
+.chess .board-bg tr:nth-child(even) td:nth-child(odd) {
+  background: #2c3e50;/* dark color *//*#7c68fd;*/
+}
+
+.chess #message {
+  width: 100%;
+  margin: 1em auto;
+}
